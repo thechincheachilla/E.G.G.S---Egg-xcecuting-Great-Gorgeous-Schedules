@@ -10,10 +10,12 @@ import UIKit
 
 class ActivitiesPageViewController: UIViewController {
     
+    /*
+        Declarations for the text field, message, and buttons
+    */
     @IBOutlet weak var activityInput: UITextField!
     
     @IBOutlet weak var addActivity: UIButton!
-    
     
     @IBOutlet weak var firstPriority: UIButton!
     
@@ -25,20 +27,26 @@ class ActivitiesPageViewController: UIViewController {
     
     @IBOutlet weak var errorMsg: UILabel!
     
+    // Initialize array for task objects to keep track of
+    // activities and their priority level.
     var masterArray: [task] = []
     var actToNum:task = task()
     
+    // Initialize user input text, all priority counts to 0
     var activityText = ""
     var firstPriNum = 0
     var highPriNum = 0
     var medPriNum = 0
     var lowPriNum = 0
     
+    // Boolean values: keep track of button presses when
+    // selecting priority
     var first:Bool = false
     var high:Bool = false
     var med:Bool = false
     var low:Bool = false
     
+    // Previously implemented but now removed metthods
     /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         
@@ -71,12 +79,15 @@ class ActivitiesPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         activityInput.delegate = self
-        errorMsg.text = "Enter at least 1 of each priority!"
+        errorMsg.text = "Enter at least 1 of each priority!" // Initialize directional message
 
         // Do any additional setup after loading the view.
     }
     
     /*
+        Steep, long debugging learning curve: comments describe our
+        thought process when learning this.
+     
         SENDING DATA BETWEEN VIEW CONTROLLERS:
         In order to send data, the performSegue method must be used.
         First, create a segue by ctrl-dragging one view controller into
@@ -88,6 +99,13 @@ class ActivitiesPageViewController: UIViewController {
         Then, overrade func prepare (exactly same as below in every single
         case. To initiate the send, var "nameOfSend" = segue.destination as!
         "name of view controller to be sent to (in this case processInput).
+    */
+    
+    /*
+        submitActivity button: will check what button is selected, then ensure
+        the user has put an activity in the text entry. The user can only
+        submit a single first priority task, 7 high priority tasks, and 40 total
+        medium/low priority tasks. Keeps track of the tally of each priority level.
     */
     @IBAction func submitActivity(_ sender: Any) {
         if (first) {
@@ -154,12 +172,21 @@ class ActivitiesPageViewController: UIViewController {
             }
             low = false
         }
+        
+        /*
+            Print debugger, ensure entries are added and accounted for
+            correctly. Not seen by user on an iPhone or other Apple device.
+        */
         print(firstPriNum, highPriNum, medPriNum, lowPriNum)
         for i in 0..<masterArray.count {
             print(masterArray[i].description)
         }
     }
     
+    /*
+        Priority buttons: When a button is clicked, sets all others
+        to false, then updates the message accordingly.
+    */
     @IBAction func firstPriority(_ sender: Any) {
         high = false
         med = false
@@ -192,10 +219,17 @@ class ActivitiesPageViewController: UIViewController {
         errorMsg.text = "Low priority selected!"
     }
     
+    /*
+        finish button: segues data to the ToDoList view controller.
+    */
     @IBAction func finish(_ sender: Any) {
         performSegue(withIdentifier: "activities", sender: self)
     }
     
+    /*
+        Prepare data for sending: Sents the tally for each priority level,
+        the master array, and the activity (not needed) to the ToDoList. 
+    */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let sendAct = segue.destination as! ToDoList
         // Sends data. "activity" and "firstPriNum" are defined in

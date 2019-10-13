@@ -12,6 +12,9 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var buttonBckg: UIImageView!
     
+    //
+    // Let's Get Crackin Button: Moves user to the next page.
+    //
     @IBAction func startButton(_ sender: Any) {
         
     }
